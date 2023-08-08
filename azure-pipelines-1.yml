@@ -10,25 +10,25 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '18.x'
-  displayName: 'Install Node.js'
+# - task: NodeTool@0
+#   inputs:
+#     versionSpec: '18.x'
+#   displayName: 'Install Node.js'
 
-- script: |
-    npm install
-    npm run build
-  displayName: 'npm install and build'
-- task: CopyFiles@2
-  inputs:
-    SourceFolder: '$(agent.builddirectory)/s/build'
-    Contents: '**'
-    TargetFolder: '$(build.artifactstagingdirectory)'
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+# - script: |
+#     npm install
+#     npm run build
+#   displayName: 'npm install and build'
+# - task: CopyFiles@2
+#   inputs:
+#     SourceFolder: '$(agent.builddirectory)/s/build'
+#     Contents: '**'
+#     TargetFolder: '$(build.artifactstagingdirectory)'
+# - task: PublishBuildArtifacts@1
+#   inputs:
+#     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+#     ArtifactName: 'drop'
+#     publishLocation: 'Container'
 - task: AzureStaticWebApp@0
   inputs:
     app_location: '/build'
