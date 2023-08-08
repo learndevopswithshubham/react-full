@@ -32,6 +32,7 @@ steps:
 - task: AzureStaticWebApp@0
   inputs:
     app_location: '/build'
+    output_location: 'build'
     api_location: '/api'
     azure_static_web_apps_api_token: '487bf0f6afcecbee0d3cbb872426a764c26660c863e204fa0e436f1be7b9c5083-9a5a243b-df3c-4a53-820c-c3f4226b5d0700f99348'
     deployment_environment: 'dev'
