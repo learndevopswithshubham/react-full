@@ -10,29 +10,29 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-# - task: NodeTool@0
-#   inputs:
-#     versionSpec: '18.x'
-#   displayName: 'Install Node.js'
+- task: NodeTool@0
+  inputs:
+    versionSpec: '18.x'
+  displayName: 'Install Node.js'
 
-# - script: |
-#     npm install
-#     npm run build
-#   displayName: 'npm install and build'
-# - task: CopyFiles@2
-#   inputs:
-#     SourceFolder: '$(agent.builddirectory)/s/build'
-#     Contents: '**'
-#     TargetFolder: '$(build.artifactstagingdirectory)'
-# - task: PublishBuildArtifacts@1
-#   inputs:
-#     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-#     ArtifactName: 'drop'
-#     publishLocation: 'Container'
+- script: |
+    npm install
+    npm run build
+  displayName: 'npm install and build'
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(agent.builddirectory)/s/build'
+    Contents: '**'
+    TargetFolder: '$(build.artifactstagingdirectory)'
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
 - task: AzureStaticWebApp@0
   inputs:
-    app_location: '/build'
-    output_location: 'build'
+    app_location: '/drop'
+    # output_location: 'build'
     api_location: '/api'
     azure_static_web_apps_api_token: '487bf0f6afcecbee0d3cbb872426a764c26660c863e204fa0e436f1be7b9c5083-9a5a243b-df3c-4a53-820c-c3f4226b5d0700f99348'
     deployment_environment: 'dev'
