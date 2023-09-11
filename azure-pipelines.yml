@@ -14,8 +14,9 @@ steps:
   displayName: 'Run a one-line script'
 
 - script: |
-    - task: CopyPublishBuildArtifacts@1
-      inputs:
-        CopyRoot: '/'
-        ArtifactName: 'build'
-        ArtifactType: 'Container'
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+    
