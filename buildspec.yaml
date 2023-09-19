@@ -12,21 +12,7 @@ phases:
       - npm run build
   post_build:
     commands:
-      - set -x
-      - |
-        case "$CODEBUILD_WEBHOOK_TRIGGER" in
-          "main")
-            # Use rsync to upload new or modified build artifacts to the main S3 bucket
-            aws s3 sync build/ s3://wsr-frontend-testing/
-            ;;
-          "dev")
-            # Use rsync to upload new or modified build artifacts to the second S3 bucket
-            aws s3 sync build/ s3://second-s3-bucket/
-            ;;
-          *)
-            echo "No matching branch for S3 sync."
-            ;;
-        esac
+      - echo "CODEBUILD_WEBHOOK_TRIGGER: $CODEBUILD_WEBHOOK_TRIGGER"
 
 artifacts:
   files: '**/*'
