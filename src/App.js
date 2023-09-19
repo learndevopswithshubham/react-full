@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+version: 0.2
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload shubham and arjit .
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+phases:
+  install:
+    runtime-versions:
+      nodejs: 16
+  pre_build:
+    commands:
+      - npm install --force
+  build:
+    commands:
+      - npm run build
+  post_build:
+    commands:
+      # Check the branch and sync to the corresponding S3 bucket
+      - |
+        if [ "$CODEBUILD_WEBHOOK_TRIGGER" == "main" ]; then
+          aws s3 sync build/ s3://wsr-frontend-testing
+        elif [ "$CODEBUILD_WEBHOOK_TRIGGER" == "branch-2" ]; then
+          aws s3 sync build/ s3://bucket-2
+        elif [ "$CODEBUILD_WEBHOOK_TRIGGER" == "branch-3" ]; then
+          aws s3 sync build/ s3://bucket-3
+        else
+          echo "No matching branch for S3 sync."
+        fi
 
-export default App;
+artifacts:
+  files: '**/*'
+  base-directory: build
+  discard-paths: yes
