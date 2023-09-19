@@ -12,12 +12,7 @@ phases:
       - npm run build
   post_build:
     commands:
-      - |
-        if [ "$CODEBUILD_WEBHOOK_TRIGGER" == "main" ]; then
-          aws s3 sync build/ s3://wsr-frontend-testing
-        else
-          echo "No matching branch for S3 sync."
-        fi
+      - aws s3 sync build/ s3://wsr-frontend-testing
 
 artifacts:
   files: '**/*'
