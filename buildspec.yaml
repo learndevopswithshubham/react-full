@@ -34,10 +34,6 @@ phases:
 
  
 
-        # Create a CloudFront invalidation
-
-        # aws cloudfront create-invalidation --distribution-id E3NHIQBT39XLSV --paths "/*"
-
  
 
 artifacts:
