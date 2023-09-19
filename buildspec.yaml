@@ -1,0 +1,49 @@
+version: 0.2
+
+ 
+
+phases:
+
+  install:
+
+    runtime-versions:
+
+      nodejs: 16
+
+  pre_build:
+
+    commands:
+
+      - npm install --force
+
+  build:
+
+    commands:
+
+      - npm run build
+
+  post_build:
+
+    commands:
+
+      - |
+
+        # Sync the build directory to the S3 bucket using rsync, excluding .htaccess
+
+        aws s3 sync build/ s3://wsr-frontend-testing --exclude ".htaccess" --delete
+
+ 
+
+        # Create a CloudFront invalidation
+
+        # aws cloudfront create-invalidation --distribution-id E3NHIQBT39XLSV --paths "/*"
+
+ 
+
+artifacts:
+
+  files: '**/*'
+
+  base-directory: build
+
+  discard-paths: yes
