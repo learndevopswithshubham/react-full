@@ -12,7 +12,10 @@ phases:
       - npm run build
   post_build:
     commands:
-      - echo "CODEBUILD_WEBHOOK_TRIGGER: $CODEBUILD_WEBHOOK_TRIGGER"
+      - |
+      if [ "$CODEBUILD_WEBHOOK_EVENT" == "PUSH" ]; then
+        if [ "$CODEBUILD_RESOLVED_SOURCE_VERSION" == "refs/heads/main" ]; then
+          aws s3 sync build/ s3://wsr-frontend-testing
 
 artifacts:
   files: '**/*'
