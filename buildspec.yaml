@@ -1,45 +1,37 @@
 version: 0.2
 
- 
-
 phases:
-
   install:
-
     runtime-versions:
-
       nodejs: 16
-
   pre_build:
-
     commands:
-
       - npm install --force
-
   build:
-
     commands:
-
       - npm run build
-
   post_build:
-
     commands:
-
+      # Deploy to S3 based on the branch
       - |
-
-        # Sync the build directory to the S3 bucket using rsync, excluding .htaccess
-
-        aws s3 sync build/ s3://wsr-frontend-testing --exclude ".htaccess" --delete
-
- 
-
- 
-
+        if [ "$CODEBUILD_WEBHOOK_EVENT" == "PUSH" ]; then
+          if [ "$CODEBUILD_RESOLVED_SOURCE_VERSION" == "$CODEBUILD_SOURCE_VERSION" ]; then
+            if [ "$CODEBUILD_SOURCE_BRANCH" == "main" ]; then
+              aws s3 sync build/ s3://wsr-frontend-testing --exclude ".env" --delete
+            elif [ "$CODEBUILD_SOURCE_BRANCH" == "branch2" ]; then
+              aws s3 sync build/ s3://bucket2 --exclude ".env" --delete
+            elif [ "$CODEBUILD_SOURCE_BRANCH" == "branch3" ]; then
+              aws s3 sync build/ s3://bucket3 --exclude ".env" --delete
+            else
+              echo "No matching branch for deployment."
+            fi
+          else
+            echo "Source version mismatch. Skipping deployment."
+          fi
+        else
+          echo "Not a push event. Skipping deployment."
+        fi
 artifacts:
-
   files: '**/*'
-
   base-directory: build
-
   discard-paths: yes
