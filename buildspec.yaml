@@ -15,10 +15,6 @@ phases:
       - |
         if [ "$CODEBUILD_WEBHOOK_TRIGGER" == "main" ]; then
           aws s3 sync build/ s3://wsr-frontend-testing
-        elif [ "$CODEBUILD_WEBHOOK_TRIGGER" == "branch-2" ]; then
-          aws s3 sync build/ s3://bucket-2
-        elif [ "$CODEBUILD_WEBHOOK_TRIGGER" == "branch-3" ]; then
-          aws s3 sync build/ s3://bucket-3
         else
           echo "No matching branch for S3 sync."
         fi
