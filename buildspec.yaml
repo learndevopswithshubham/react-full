@@ -12,22 +12,22 @@ phases:
       - npm run build
   post_build:
     commands:
-      # Deploy to S3 based on the branch
       - |
         if [ "$CODEBUILD_WEBHOOK_EVENT" == "PUSH" ]; then
-          if [ "$CODEBUILD_RESOLVED_SOURCE_VERSION" == "$CODEBUILD_SOURCE_VERSION" ]; then
-            if [ "$CODEBUILD_SOURCE_BRANCH" == "main" ]; then
+          case "$CODEBUILD_SOURCE_BRANCH" in
+            "main")
               aws s3 sync build/ s3://wsr-frontend-testing 
-            elif [ "$CODEBUILD_SOURCE_BRANCH" == "branch2" ]; then
-              aws s3 sync build/ s3://bucket2 --exclude ".env" --delete
-            elif [ "$CODEBUILD_SOURCE_BRANCH" == "branch3" ]; then
-              aws s3 sync build/ s3://bucket3 --exclude ".env" --delete
-            else
+              ;;
+            "branch2")
+              aws s3 sync build/ s3://bucket2 --exclude ".htaccess" --delete
+              ;;
+            "branch3")
+              aws s3 sync build/ s3://bucket3 --exclude ".htaccess" --delete
+              ;;
+            *)
               echo "No matching branch for deployment."
-            fi
-          else
-            echo "Source version mismatch. Skipping deployment."
-          fi
+              ;;
+          esac
         else
           echo "Not a push event. Skipping deployment."
         fi
