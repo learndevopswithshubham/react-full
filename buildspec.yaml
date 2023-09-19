@@ -4,6 +4,8 @@ phases:
   install:
     runtime-versions:
       nodejs: 16
+    commands:
+      - npm install -g npm@latest
   pre_build:
     commands:
       - npm install --force
@@ -13,7 +15,7 @@ phases:
   post_build:
     commands:
       - |
-        if [ "$CODEBUILD_WEBHOOK_HEAD_REF" = "refs/heads/main" ]; then
+        if [ "$CODEBUILD_WEBHOOK_TRIGGER" == "main" ]; then
           aws s3 sync build/ s3://wsr-frontend-testing
         else
           echo "No matching branch for S3 sync."
