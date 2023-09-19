@@ -17,7 +17,7 @@ phases:
         if [ "$CODEBUILD_WEBHOOK_EVENT" == "PUSH" ]; then
           if [ "$CODEBUILD_RESOLVED_SOURCE_VERSION" == "$CODEBUILD_SOURCE_VERSION" ]; then
             if [ "$CODEBUILD_SOURCE_BRANCH" == "main" ]; then
-              aws s3 sync build/ s3://wsr-frontend-testing --exclude ".env" --delete
+              aws s3 sync build/ s3://wsr-frontend-testing 
             elif [ "$CODEBUILD_SOURCE_BRANCH" == "branch2" ]; then
               aws s3 sync build/ s3://bucket2 --exclude ".env" --delete
             elif [ "$CODEBUILD_SOURCE_BRANCH" == "branch3" ]; then
