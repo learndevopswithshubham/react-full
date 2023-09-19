@@ -16,7 +16,16 @@ phases:
       if [ "$CODEBUILD_WEBHOOK_EVENT" == "PUSH" ]; then
         if [ "$CODEBUILD_RESOLVED_SOURCE_VERSION" == "refs/heads/main" ]; then
           aws s3 sync build/ s3://wsr-frontend-testing
-
+        elif [ "$CODEBUILD_RESOLVED_SOURCE_VERSION" == "refs/heads/branch-2" ]; then
+          aws s3 sync build/ s3://bucket-2
+        elif [ "$CODEBUILD_RESOLVED_SOURCE_VERSION" == "refs/heads/branch-3" ]; then
+          aws s3 sync build/ s3://bucket-3
+        else
+          echo "No matching branch for S3 sync."
+        fi
+      else
+        echo "Not a push event. Skipping deployment."
+      fi
 artifacts:
   files: '**/*'
   base-directory: build
