@@ -3,7 +3,7 @@ import './App.css';
  
 function App() {
     return (
-        <h1> WELCOME TO OUR MAIN BRANCH.. </h1>
+        <h1> WELCOME TO OUR MAIN BRANCH..... </h1>
     );
 }
  
