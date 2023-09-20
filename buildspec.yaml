@@ -12,7 +12,15 @@ phases:
       - npm run build
   post_build:
     commands:
-      - aws s3 sync build/ s3://wsr-frontend-testing
+      - |
+        if [ "$BRANCH_NAME_MAIN" == "main" ]; then
+          aws s3 sync build/ s3://wsr-frontend-testing
+        elif [ "$BRANCH_NAME_DEV" == "dev" ]; then
+          aws s3 sync build/ s3://bucket-2
+        else
+          echo "No S3 bucket specified for this branch."
+          exit 1
+        f
 artifacts:
   files: '**/*'
   base-directory: build
