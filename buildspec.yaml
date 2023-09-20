@@ -15,7 +15,7 @@ phases:
       - |
         echo "BRANCH_NAME: $BRANCH_NAME"
         if [ "$BRANCH_NAME" = "main" ]; then
-          aws s3 sync build/ s3://arjit-s3
+          aws s3 sync build/ s3://wsr-frontend-testing
         elif [ "$BRANCH_NAME" = "dev" ]; then
           aws s3 sync build/ s3://lucifer-wsr
         else
