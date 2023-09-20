@@ -17,7 +17,7 @@ phases:
         if [ "$BRANCH_NAME" = "main" ]; then
           aws s3 sync build/ s3://arjit-s3
         elif [ "$BRANCH_NAME" = "dev" ]; then
-          aws s3 sync build/ s3://bucket-2
+          aws s3 sync build/ s3://lucifer-wsr
         else
           echo "No S3 bucket specified for this branch."
           exit 1
